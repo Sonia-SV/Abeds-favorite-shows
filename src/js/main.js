@@ -72,7 +72,14 @@ const paintShows = (ev) => {
   if (ev.image === null) {
     listImage.setAttribute('src', 'https://via.placeholder.com/210x295/555555/FFFFFF/?text=OPS!+:)');
   }
+
+  //Style
   listItem.appendChild(listImage);
+  for (const fav of favShows) {
+    if (fav.id === ev.id) {
+      listItem.classList.add('fav__background');
+    }
+  }
 
   listenFavClicks();
 };
