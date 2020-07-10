@@ -7,14 +7,20 @@ let favShows = [];
 
 //Const
 const searchInput = document.querySelector('.js-search');
-const mainPage = document.querySelector('.js-main');
-const searchList = document.createElement('ul');
-mainPage.appendChild(searchList);
+const mainPage = document.querySelector('.js-main-results');
 const searchButton = document.querySelector('.js-search-button');
 
-/*---------------------------GET SHOWS FROM API---------------------------*/
-//Handle events
+const searchList = document.createElement('ul');
+const favList = document.createElement('ul');
 
+searchList.setAttribute('class', 'main__results__search');
+favList.setAttribute('class', 'main__results__fav');
+mainPage.appendChild(searchList);
+mainPage.appendChild(favList);
+
+/*-----------------------------------GET SHOWS FROM API-----------------------------------*/
+
+//Handle events
 const handleSearchButton = (ev) => {
   ev.preventDefault();
   resetSearch();
@@ -37,14 +43,14 @@ const getShowsFromApi = () => {
         searchShows.push(data.show);
       }
       for (const show of searchShows) {
-        paintSearchShows(show);
+        paintShows(show);
       }
     });
 };
 
-//Paint Api List
+/*--------------------------------------PAINT SEARCH--------------------------------------*/
 
-const paintSearchShows = (ev) => {
+const paintShows = (ev) => {
   //This part of the function creates <li> labels with DOM tools and assings the show.id to the <li>
   const listItem = document.createElement('li');
   searchList.appendChild(listItem);
@@ -64,9 +70,10 @@ const paintSearchShows = (ev) => {
     listImage.setAttribute('src', ev.image.medium);
   }
   if (ev.image === null) {
-    listImage.setAttribute('src', 'https://via.placeholder.com/210x295/000000/FFFFFF/?text=OPS!+:)');
+    listImage.setAttribute('src', 'https://via.placeholder.com/210x295/555555/FFFFFF/?text=OPS!+:)');
   }
   listItem.appendChild(listImage);
+
   listenFavClicks();
 };
 
@@ -78,7 +85,7 @@ searchButton.addEventListener('click', handleSearchButton);
 //   }
 // });
 
-/*---------------------------ADD SHOWS TO FAV---------------------------*/
+/*------------------------------------ADD SHOWS TO FAV------------------------------------*/
 
 const handleShowFav = (ev) => {
   const clickedId = parseInt(ev.currentTarget.id);
@@ -91,17 +98,13 @@ const handleShowFav = (ev) => {
 
   if (clickedShow === undefined) {
     favShows.push(showList);
+    favStyle(ev);
   } else {
     const showIdx = favShows.indexOf(clickedShow);
-    //console.log(showIdx);
     favShows.splice(showIdx, 1);
+    favStyle(ev);
   }
-  //console.log(favShows);
-  paintFav(ev);
-};
-
-const paintFav = (ev) => {
-  ev.currentTarget.classList.toggle('fav__background');
+  updateLocalStorage();
 };
 
 const listenFavClicks = () => {
@@ -111,3 +114,52 @@ const listenFavClicks = () => {
     clickedItem.addEventListener('click', handleShowFav);
   }
 };
+
+/*-------------------------------------LOCAL STORAGE--------------------------------------*/
+const updateLocalStorage = () => {
+  localStorage.setItem('fav', JSON.stringify(favShows));
+};
+
+const getFromLocalStorage = () => {
+  const data = JSON.parse(localStorage.getItem('fav'));
+  if (data !== null) {
+    favShows = data;
+  }
+};
+
+/*--------------------------------------PAINT FAV--------------------------------------*/
+const favStyle = (ev) => {
+  ev.currentTarget.classList.toggle('fav__background');
+  favList.innerHTML = '';
+  for (const show of favShows) {
+    paintFavList(show);
+  }
+};
+
+const paintFavList = (ev) => {
+  //This part of the function creates <li> labels with DOM tools and assings the show.id to the <li>
+  const listItem = document.createElement('li');
+  favList.appendChild(listItem);
+  listItem.setAttribute('id', ev.id);
+  listItem.setAttribute('class', 'js-fav');
+
+  //This part of the function creates the elements inside the <li> label: tittle and img.
+  //Tittle
+  const listTittle = document.createElement('h3');
+  const tittleName = document.createTextNode(ev.name);
+  listItem.appendChild(listTittle);
+  listTittle.appendChild(tittleName);
+
+  //Image
+  const listImage = document.createElement('img');
+  if (ev.image !== null) {
+    listImage.setAttribute('src', ev.image.medium);
+  }
+  if (ev.image === null) {
+    listImage.setAttribute('src', 'https://via.placeholder.com/210x295/111111/FFFFFF/?text=OPS!+:)');
+  }
+  listItem.appendChild(listImage);
+};
+
+//paintFavList();
+getFromLocalStorage();

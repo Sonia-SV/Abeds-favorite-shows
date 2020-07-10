@@ -9,3 +9,18 @@
 .fav__background {
   background-color: blueviolet;
 }
+
+img {
+  width: 50px;
+}
+
+.main__results {
+  display: flex;
+  background-color: blue;
+  &__fav {
+    background-color: pink;
+  }
+  &__search {
+    background-color: blue;
+  }
+}
