@@ -6,7 +6,7 @@
   cursor: pointer;
 }
 
-.fav__background {
+.js-fav-item {
   background-color: blueviolet;
 }
 
@@ -23,4 +23,11 @@ img {
   &__search {
     background-color: blue;
   }
+}
+
+.js-fav-delete {
+  cursor: pointer;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
 }

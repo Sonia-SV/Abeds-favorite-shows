@@ -9,7 +9,7 @@ let favShows = [];
 const searchInput = document.querySelector('.js-search');
 const mainPage = document.querySelector('.js-main-results');
 const searchButton = document.querySelector('.js-search-button');
-
+let listItem = '';
 const searchList = document.createElement('ul');
 const favList = document.createElement('ul');
 
@@ -18,7 +18,7 @@ favList.setAttribute('class', 'main__results__fav');
 mainPage.appendChild(searchList);
 mainPage.appendChild(favList);
 
-/*-----------------------------------GET SHOWS FROM API-----------------------------------*/
+/*-----GET SHOWS FROM API-----*/
 
 //Handle events
 const handleSearchButton = (ev) => {
@@ -39,79 +39,86 @@ const getShowsFromApi = () => {
   fetch(`http://api.tvmaze.com/search/shows?q=${searchShow}`)
     .then((response) => response.json())
     .then((searchData) => {
+      if (searchData.length === 0) {
+        console.log('La búsqueda no ha dado resultados');
+        //ESCRIBIR ESTO EN PANTALLA
+      }
       for (const data of searchData) {
-        searchShows.push(data.show);
+        if (data.show.image !== null) {
+          searchShows.push({
+            id: data.show.id,
+            name: data.show.name,
+            img: data.show.image.medium,
+            fav: false,
+          });
+        } else {
+          searchShows.push({
+            id: data.show.id,
+            name: data.show.name,
+            img: 'https://via.placeholder.com/210x295/555555/FFFFFF/?text=OPS!+:)',
+            fav: false,
+          });
+        }
       }
-      for (const show of searchShows) {
-        paintShows(show);
-      }
+      buscarFavs();
+      paintShows();
     });
 };
 
-/*--------------------------------------PAINT SEARCH--------------------------------------*/
+/*-----PAINT SEARCH-----*/
 
-const paintShows = (ev) => {
-  //This part of the function creates <li> labels with DOM tools and assings the show.id to the <li>
-  const listItem = document.createElement('li');
-  searchList.appendChild(listItem);
-  listItem.setAttribute('id', ev.id);
-  listItem.setAttribute('class', 'js-item');
+const paintShows = () => {
+  searchList.innerHTML = '';
 
-  //This part of the function creates the elements inside the <li> label: tittle and img.
-  //Tittle
-  const listTittle = document.createElement('h3');
-  const tittleName = document.createTextNode(ev.name);
-  listItem.appendChild(listTittle);
-  listTittle.appendChild(tittleName);
-
-  //Image
-  const listImage = document.createElement('img');
-  if (ev.image !== null) {
-    listImage.setAttribute('src', ev.image.medium);
-  }
-  if (ev.image === null) {
-    listImage.setAttribute('src', 'https://via.placeholder.com/210x295/555555/FFFFFF/?text=OPS!+:)');
-  }
-
-  //Style
-  listItem.appendChild(listImage);
-  for (const fav of favShows) {
-    if (fav.id === ev.id) {
-      listItem.classList.add('fav__background');
+  for (const show of searchShows) {
+    //This part of the function creates <li> labels with DOM tools and assings the show.id to the <li>
+    listItem = document.createElement('li');
+    searchList.appendChild(listItem);
+    listItem.setAttribute('id', show.id);
+    listItem.setAttribute('class', 'js-item');
+    if (show.fav === true) {
+      listItem.classList.add('js-fav-item');
+    } else if (show.fav === false) {
+      listItem.classList.remove('js-fav-item');
     }
-  }
 
-  listenFavClicks();
+    //This part of the function creates the elements inside the <li> label: tittle and img.
+    //Tittle
+    const listTittle = document.createElement('h3');
+    const tittleName = document.createTextNode(show.name);
+    listItem.appendChild(listTittle);
+    listTittle.appendChild(tittleName);
+
+    //Image
+    const listImage = document.createElement('img');
+    listImage.setAttribute('src', show.img);
+
+    listItem.appendChild(listImage);
+    listenFavClicks();
+  }
 };
 
 searchButton.addEventListener('click', handleSearchButton);
-// searchInput.addEventListener('keyup', function (ev) {
-//   if (ev.keycode === 13) {
-//     ev.preventDefault();
-//     handleSearchButton();
-//   }
-// });
 
-/*------------------------------------ADD SHOWS TO FAV------------------------------------*/
+/*-----ADD SHOWS TO FAV-----*/
 
 const handleShowFav = (ev) => {
   const clickedId = parseInt(ev.currentTarget.id);
-  //console.log(clickedId);
   const showList = searchShows.find((selectedShow) => selectedShow.id === clickedId);
   const clickedShow = favShows.find((selectedShow) => selectedShow.id === clickedId);
-  // console.log(searchShows);
-  // console.log(clickedShow);
-  // console.log(showList.id);
 
   if (clickedShow === undefined) {
+    showList.fav = true;
     favShows.push(showList);
-    favStyle(ev);
   } else {
     const showIdx = favShows.indexOf(clickedShow);
     favShows.splice(showIdx, 1);
-    favStyle(ev);
+    showList.fav = false;
   }
+  buscarFavs();
+  paintShows();
   updateLocalStorage();
+  paintFavList();
 };
 
 const listenFavClicks = () => {
@@ -122,7 +129,7 @@ const listenFavClicks = () => {
   }
 };
 
-/*-------------------------------------LOCAL STORAGE--------------------------------------*/
+/*-----LOCAL STORAGE-----*/
 const updateLocalStorage = () => {
   localStorage.setItem('fav', JSON.stringify(favShows));
 };
@@ -134,39 +141,83 @@ const getFromLocalStorage = () => {
   }
 };
 
-/*--------------------------------------PAINT FAV--------------------------------------*/
-const favStyle = (ev) => {
-  ev.currentTarget.classList.toggle('fav__background');
+/*-----PAINT FAV-----*/
+
+const paintFavList = () => {
   favList.innerHTML = '';
-  for (const show of favShows) {
-    paintFavList(show);
+  for (const fav of favShows) {
+    //This part of the function creates <li> labels with DOM tools and assings the show.id to the <li>
+    const listItem = document.createElement('li');
+    favList.appendChild(listItem);
+    listItem.setAttribute('id', fav.id);
+    listItem.setAttribute('class', 'js-fav');
+
+    //This part of the function creates the elements inside the <li> label: tittle and img.
+    //Tittle
+    const listTittle = document.createElement('h4');
+    const tittleName = document.createTextNode(fav.name);
+    listItem.appendChild(listTittle);
+    listTittle.appendChild(tittleName);
+
+    //Image
+    const listImage = document.createElement('img');
+    listImage.setAttribute('src', fav.img);
+
+    listItem.appendChild(listImage);
+
+    //Delete icon
+    const spanDelete = document.createElement('span');
+    spanDelete.setAttribute('class', 'js-fav-delete');
+    spanDelete.setAttribute('id', fav.id);
+    const iDelete = document.createElement('i');
+    iDelete.setAttribute('class', 'far fa-times-circle');
+    spanDelete.appendChild(iDelete);
+    listItem.appendChild(spanDelete);
+  }
+  listenDeleteFav();
+  buscarFavs();
+  paintShows();
+};
+
+function buscarFavs() {
+  for (const fav of favShows) {
+    const matchShow = searchShows.find((currentShow) => currentShow.id === fav.id);
+    if (matchShow !== undefined) {
+      matchShow.fav = true;
+    }
+  }
+}
+/*-----DELETE FAV-----*/
+
+const handleDeleteFav = (ev) => {
+  const clickedId = parseInt(ev.currentTarget.id);
+  const clickedShow = favShows.find((selectedShow) => selectedShow.id === clickedId);
+  const showIdx = favShows.indexOf(clickedShow);
+  favShows.splice(showIdx, 1);
+  paintFavList();
+  updateLocalStorage();
+  buscarDelete();
+  paintShows();
+};
+
+const listenDeleteFav = () => {
+  const favItem = document.querySelectorAll('.js-fav-delete');
+  for (let index = 0; index < favItem.length; index++) {
+    const clickedItem = favItem[index];
+    clickedItem.addEventListener('click', handleDeleteFav);
   }
 };
 
-const paintFavList = (ev) => {
-  //This part of the function creates <li> labels with DOM tools and assings the show.id to the <li>
-  const listItem = document.createElement('li');
-  favList.appendChild(listItem);
-  listItem.setAttribute('id', ev.id);
-  listItem.setAttribute('class', 'js-fav');
-
-  //This part of the function creates the elements inside the <li> label: tittle and img.
-  //Tittle
-  const listTittle = document.createElement('h3');
-  const tittleName = document.createTextNode(ev.name);
-  listItem.appendChild(listTittle);
-  listTittle.appendChild(tittleName);
-
-  //Image
-  const listImage = document.createElement('img');
-  if (ev.image !== null) {
-    listImage.setAttribute('src', ev.image.medium);
+function buscarDelete() {
+  for (const show of searchShows) {
+    if (show.fav === true) {
+      const matchShow = favShows.find((currentShow) => currentShow.id === show.id);
+      if (matchShow === undefined) {
+        show.fav = false;
+      }
+    }
   }
-  if (ev.image === null) {
-    listImage.setAttribute('src', 'https://via.placeholder.com/210x295/111111/FFFFFF/?text=OPS!+:)');
-  }
-  listItem.appendChild(listImage);
-};
-
-//paintFavList();
+  paintShows();
+}
+paintShows();
 getFromLocalStorage();
