@@ -1,33 +1,106 @@
-.main__list {
-  padding-left: 2rem;
-}
-
-.js-item {
-  cursor: pointer;
-}
-
-.js-fav-item {
-  background-color: blueviolet;
-}
-
-img {
-  width: 50px;
-}
-
 .main {
-  display: flex;
-  &__fav {
-    background-color: pink;
-  }
+  font-family: $main;
+  color: $color-light;
+  &__hero {
+    background: {
+      image: url('../images/Herowide.png');
+      size: cover;
+      position: top;
+      repeat: no-repeat;
+    }
 
+    height: 200px;
+  }
   &__search {
-    background-color: rgb(132, 132, 255);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__form {
+      width: fit-content;
+      margin: 15px auto 5px auto;
+      border: dotted 1px $color-light;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5px;
+      &__label {
+        font-size: 22px;
+
+        margin: 3px 0 3px 0;
+      }
+      &__input {
+        color: $color-midtone-dark;
+        margin: 3px 0 3px 0;
+        font-size: 16px;
+        &:focus {
+          background-color: $color-secondary;
+        }
+      }
+      &__button {
+        background-color: $color-midtone;
+        color: $color-dark;
+        margin: 3px 0 3px 0;
+        padding: 2px;
+        border-radius: 3px;
+        font-size: 16px;
+        width: 60px;
+      }
+    }
+  }
+
+  @include tablet {
+    &__search {
+      &__form {
+        margin: 25px auto 15px auto;
+        padding: 15px;
+        &__label {
+          font-size: 30px;
+
+          margin: 6px 0 6px 0;
+        }
+        &__input {
+          margin: 6px 0 6px 0;
+          font-size: 25px;
+        }
+        &__button {
+          margin: 6px 0 6px 0;
+          font-size: 25px;
+          width: 100px;
+        }
+      }
+    }
   }
 }
 
-.js-fav-delete {
-  cursor: pointer;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
+// // .main__list {
+// //   padding-left: 2rem;
+// // }
+
+// // .js-item {
+// //   cursor: pointer;
+// // }
+
+// // .js-fav-item {
+// //   background-color: blueviolet;
+// // }
+
+// // img {
+// //   width: 100px;
+// // }
+
+// // .main {
+// //   &__fav {
+// //     background-color: pink;
+// //   }
+
+// //   &__search {
+// //     background-color: rgb(132, 132, 255);
+// //   }
+// // }
+
+// // .js-fav-delete {
+// //   cursor: pointer;
+// //   display: inline-block;
+// //   width: 20px;
+// //   height: 20px;
+// // }

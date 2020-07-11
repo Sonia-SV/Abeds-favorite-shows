@@ -71,7 +71,7 @@ const getShowsFromApi = () => {
           searchShows.push({
             id: data.show.id,
             name: data.show.name,
-            img: 'https://via.placeholder.com/210x295/555555/FFFFFF/?text=OPS!+:)',
+            img: './assets/images/noimg-cornelius.png',
             fav: false,
           });
         }

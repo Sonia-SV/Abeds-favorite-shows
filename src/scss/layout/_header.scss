@@ -1,0 +1,21 @@
+.header {
+  font-family: $tittle;
+  color: $color-light;
+  font-size: 5px;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  &__h1 {
+    width: 250px;
+
+    &__logo {
+      width: 100%;
+    }
+  }
+  @include tablet {
+    margin-top: 40px;
+    &__h1 {
+      width: 400px;
+    }
+  }
+}
