@@ -29,6 +29,7 @@ resetItem.appendChild(reset);
 favListContainer.appendChild(favList);
 
 const errorSearch = document.createElement('p');
+errorSearch.setAttribute('class', 'js-error-message');
 searchListContainer.appendChild(errorSearch);
 searchListContainer.appendChild(searchList);
 
@@ -54,9 +55,9 @@ const getShowsFromApi = () => {
     .then((response) => response.json())
     .then((searchData) => {
       if (searchData.length === 0) {
-        const error = document.createTextNode('Tu búsqueda no ha dado resultados');
-        //ESCRIBIR ESTO EN PANTALLA
-        errorSearch.appendChild(error);
+        errorSearch.innerHTML = 'Tu búsqueda no ha dado resultados';
+      } else {
+        errorSearch.innerHTML = '';
       }
       for (const data of searchData) {
         if (data.show.image !== null) {
