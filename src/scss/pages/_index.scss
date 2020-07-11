@@ -1,3 +1,32 @@
 .main__list {
   padding-left: 2rem;
 }
+
+.js-item {
+  cursor: pointer;
+}
+
+.js-fav-item {
+  background-color: blueviolet;
+}
+
+img {
+  width: 50px;
+}
+
+.main__results {
+  display: flex;
+
+  background-color: pink;
+
+  &__search {
+    background-color: blue;
+  }
+}
+
+.js-fav-delete {
+  cursor: pointer;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
