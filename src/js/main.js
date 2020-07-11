@@ -1,5 +1,4 @@
 'use strict';
-
 //Arrays
 
 let searchShows = [];
@@ -244,3 +243,4 @@ btnReset.addEventListener('click', resetFavs);
 paintFavList();
 paintShows();
 getFromLocalStorage();
+
