@@ -9,14 +9,21 @@ let favShows = [];
 const searchInput = document.querySelector('.js-search');
 const mainPage = document.querySelector('.js-main-results');
 const searchButton = document.querySelector('.js-search-button');
-let listItem = '';
+const favListContainer = document.createElement('div');
 const searchList = document.createElement('ul');
 const favList = document.createElement('ul');
 
 searchList.setAttribute('class', 'main__results__search');
 favList.setAttribute('class', 'main__results__fav');
+mainPage.appendChild(favListContainer);
 mainPage.appendChild(searchList);
-mainPage.appendChild(favList);
+favListContainer.appendChild(favList);
+
+const resetItem = document.createElement('div');
+const reset = document.createTextNode('DALE A RESET');
+resetItem.setAttribute('class', 'js-button-reset');
+favListContainer.appendChild(resetItem);
+resetItem.appendChild(reset);
 
 /*-----GET SHOWS FROM API-----*/
 
@@ -60,7 +67,7 @@ const getShowsFromApi = () => {
           });
         }
       }
-      buscarFavs();
+      updateFavSearch();
       paintShows();
     });
 };
@@ -72,7 +79,7 @@ const paintShows = () => {
 
   for (const show of searchShows) {
     //This part of the function creates <li> labels with DOM tools and assings the show.id to the <li>
-    listItem = document.createElement('li');
+    const listItem = document.createElement('li');
     searchList.appendChild(listItem);
     listItem.setAttribute('id', show.id);
     listItem.setAttribute('class', 'js-item');
@@ -115,7 +122,7 @@ const handleShowFav = (ev) => {
     favShows.splice(showIdx, 1);
     showList.fav = false;
   }
-  buscarFavs();
+  updateFavSearch();
   paintShows();
   updateLocalStorage();
   paintFavList();
@@ -139,6 +146,7 @@ const getFromLocalStorage = () => {
   if (data !== null) {
     favShows = data;
   }
+  paintFavList();
 };
 
 /*-----PAINT FAV-----*/
@@ -175,11 +183,11 @@ const paintFavList = () => {
     listItem.appendChild(spanDelete);
   }
   listenDeleteFav();
-  buscarFavs();
+  updateFavSearch();
   paintShows();
 };
 
-function buscarFavs() {
+function updateFavSearch() {
   for (const fav of favShows) {
     const matchShow = searchShows.find((currentShow) => currentShow.id === fav.id);
     if (matchShow !== undefined) {
@@ -196,7 +204,7 @@ const handleDeleteFav = (ev) => {
   favShows.splice(showIdx, 1);
   paintFavList();
   updateLocalStorage();
-  buscarDelete();
+  deleteFavSearch();
   paintShows();
 };
 
@@ -208,7 +216,7 @@ const listenDeleteFav = () => {
   }
 };
 
-function buscarDelete() {
+function deleteFavSearch() {
   for (const show of searchShows) {
     if (show.fav === true) {
       const matchShow = favShows.find((currentShow) => currentShow.id === show.id);
@@ -219,5 +227,20 @@ function buscarDelete() {
   }
   paintShows();
 }
+
+/*-----RESET FAV AND LOCAL STORAGE-----*/
+
+const btnReset = document.querySelector('.js-button-reset');
+
+const resetFavs = () => {
+  favShows = [];
+  updateLocalStorage();
+  paintFavList();
+  deleteFavSearch();
+};
+
+btnReset.addEventListener('click', resetFavs);
+
+paintFavList();
 paintShows();
 getFromLocalStorage();

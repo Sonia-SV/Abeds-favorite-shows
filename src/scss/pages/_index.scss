@@ -16,10 +16,9 @@ img {
 
 .main__results {
   display: flex;
-  background-color: blue;
-  &__fav {
-    background-color: pink;
-  }
+
+  background-color: pink;
+
   &__search {
     background-color: blue;
   }
