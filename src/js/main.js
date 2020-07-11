@@ -6,23 +6,31 @@ let favShows = [];
 
 //Const
 const searchInput = document.querySelector('.js-search');
-const mainPage = document.querySelector('.js-main-results');
+const mainPage = document.querySelector('.js-main');
 const searchButton = document.querySelector('.js-search-button');
-const favListContainer = document.createElement('div');
+
+const searchListContainer = document.createElement('section');
+const favListContainer = document.createElement('section');
 const searchList = document.createElement('ul');
 const favList = document.createElement('ul');
 
-searchList.setAttribute('class', 'main__results__search');
-favList.setAttribute('class', 'main__results__fav');
+searchListContainer.setAttribute('class', 'main__search');
+favListContainer.setAttribute('class', 'main__fav');
+searchList.setAttribute('class', 'main__search__results');
+favList.setAttribute('class', 'main__fav__results');
 mainPage.appendChild(favListContainer);
-mainPage.appendChild(searchList);
-favListContainer.appendChild(favList);
+mainPage.appendChild(searchListContainer);
 
 const resetItem = document.createElement('div');
 const reset = document.createTextNode('DALE A RESET');
-resetItem.setAttribute('class', 'js-button-reset');
+resetItem.setAttribute('class', 'main__fav__reset js-button-reset');
 favListContainer.appendChild(resetItem);
 resetItem.appendChild(reset);
+favListContainer.appendChild(favList);
+
+const errorSearch = document.createElement('p');
+searchListContainer.appendChild(errorSearch);
+searchListContainer.appendChild(searchList);
 
 /*-----GET SHOWS FROM API-----*/
 
@@ -46,8 +54,9 @@ const getShowsFromApi = () => {
     .then((response) => response.json())
     .then((searchData) => {
       if (searchData.length === 0) {
-        console.log('La búsqueda no ha dado resultados');
+        const error = document.createTextNode('Tu búsqueda no ha dado resultados');
         //ESCRIBIR ESTO EN PANTALLA
+        errorSearch.appendChild(error);
       }
       for (const data of searchData) {
         if (data.show.image !== null) {
@@ -243,4 +252,3 @@ btnReset.addEventListener('click', resetFavs);
 paintFavList();
 paintShows();
 getFromLocalStorage();
-

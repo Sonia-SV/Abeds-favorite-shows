@@ -14,13 +14,14 @@ img {
   width: 50px;
 }
 
-.main__results {
+.main {
   display: flex;
-
-  background-color: pink;
+  &__fav {
+    background-color: pink;
+  }
 
   &__search {
-    background-color: blue;
+    background-color: rgb(132, 132, 255);
   }
 }
 
