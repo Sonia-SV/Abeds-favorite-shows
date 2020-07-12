@@ -1,0 +1,75 @@
+.main {
+  font-family: $main;
+  color: $color-light;
+
+  &__data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 40vh;
+    width: 100%;
+    &__form {
+      width: fit-content;
+      margin: 15px auto 5px auto;
+      border: dotted 1px $color-light;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5px;
+      &__label {
+        font-size: 22px;
+
+        margin: 3px 0 3px 0;
+      }
+      &__input {
+        color: $color-secondary;
+        text-align: center;
+        background-color: $color-midtone-dark;
+        margin: 3px 0 3px 0;
+        font-size: 16px;
+        ::placeholder {
+          color: $color-light-midtone;
+        }
+        &:focus {
+          background-color: $color-light-midtone;
+        }
+      }
+      &__button {
+        background-color: $color-midtone;
+        color: $color-dark;
+        margin: 3px 0 3px 0;
+        padding: 2px;
+        border-radius: 3px;
+        font-size: 16px;
+        width: 60px;
+        box-shadow: inset 1px 1px 2px 0px rgba(224, 221, 224, 1), 2px 2px 2px 2px rgb(29, 29, 29);
+        z-index: 3;
+      }
+    }
+  }
+
+  @include tablet {
+    &__data {
+      top: 50vh;
+      &__form {
+        margin: 35px auto 40px auto;
+        padding: 15px;
+        &__label {
+          font-size: 30px;
+
+          margin: 6px 0 6px 0;
+        }
+        &__input {
+          margin: 6px 0 6px 0;
+          font-size: 25px;
+        }
+        &__button {
+          margin: 6px 0 6px 0;
+          font-size: 25px;
+          width: 100px;
+        }
+      }
+    }
+  }
+}
