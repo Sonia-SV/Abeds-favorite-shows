@@ -88,7 +88,7 @@
       width: 100%;
       z-index: 8;
       padding: 200px 20px 50px 20px;
-      margin-top: -200px;
+      margin-top: -380px;
       min-height: 100vh;
       border-radius: 5px;
       background-color: $color-quaternary;
@@ -214,6 +214,7 @@
         }
       }
       &__results {
+        margin-top: -200px;
         p {
           margin-top: 10px;
         }
