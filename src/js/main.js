@@ -9,21 +9,30 @@ const searchInput = document.querySelector('.js-search');
 const mainPage = document.querySelector('.js-main');
 const searchButton = document.querySelector('.js-search-button');
 
-const searchListContainer = document.createElement('section');
-const favListContainer = document.createElement('section');
+const showsContainer = document.createElement('section');
+const searchListContainer = document.createElement('div');
+const favListContainer = document.createElement('aside');
 const searchList = document.createElement('ul');
 const favList = document.createElement('ul');
 
-searchListContainer.setAttribute('class', 'main__search');
-favListContainer.setAttribute('class', 'main__fav');
-searchList.setAttribute('class', 'main__search__results');
-favList.setAttribute('class', 'main__fav__results');
-mainPage.appendChild(favListContainer);
-mainPage.appendChild(searchListContainer);
+showsContainer.setAttribute('class', 'main__shows');
+searchListContainer.setAttribute('class', 'main__shows__search');
+favListContainer.setAttribute('class', 'main__shows__fav');
+searchList.setAttribute('class', 'main__shows__search__results');
+favList.setAttribute('class', 'main__shows__fav__results');
+mainPage.appendChild(showsContainer);
+showsContainer.appendChild(favListContainer);
+showsContainer.appendChild(searchListContainer);
+
+const tvIcon = document.createElement('div');
+tvIcon.setAttribute('class', 'main__shows__fav__tv  js-tv-icon');
+favListContainer.appendChild(tvIcon);
+const tvFav = document.createElement('p');
+tvIcon.appendChild(tvFav);
 
 const resetItem = document.createElement('div');
-const reset = document.createTextNode('DALE A RESET');
-resetItem.setAttribute('class', 'main__fav__reset js-button-reset');
+const reset = document.createTextNode('RESET YOUR FAVORITES');
+resetItem.setAttribute('class', 'main__shows__fav__reset js-button-reset');
 favListContainer.appendChild(resetItem);
 resetItem.appendChild(reset);
 favListContainer.appendChild(favList);
@@ -71,7 +80,7 @@ const getShowsFromApi = () => {
           searchShows.push({
             id: data.show.id,
             name: data.show.name,
-            img: './assets/images/noimg-cornelius.png',
+            img: './assets/images/Cornelius.png',
             fav: false,
           });
         }
@@ -87,7 +96,7 @@ const paintShows = () => {
   searchList.innerHTML = '';
 
   for (const show of searchShows) {
-    //This part of the function creates <li> labels with DOM tools and assings the show.id to the <li>
+    //This part of the function creates <li> labels with DOM tools and
     const listItem = document.createElement('li');
     searchList.appendChild(listItem);
     listItem.setAttribute('id', show.id);
@@ -101,15 +110,18 @@ const paintShows = () => {
     //This part of the function creates the elements inside the <li> label: tittle and img.
     //Tittle
     const listTittle = document.createElement('h3');
+    listTittle.setAttribute('class', 'h3');
     const tittleName = document.createTextNode(show.name);
     listItem.appendChild(listTittle);
     listTittle.appendChild(tittleName);
 
-    //Image
+    //Image assings the show.id to the <li>
+    const imgcontainer = document.createElement('div');
     const listImage = document.createElement('img');
     listImage.setAttribute('src', show.img);
+    imgcontainer.appendChild(listImage);
 
-    listItem.appendChild(listImage);
+    listItem.appendChild(imgcontainer);
     listenFavClicks();
   }
 };
@@ -155,6 +167,8 @@ const getFromLocalStorage = () => {
   if (data !== null) {
     favShows = data;
   }
+  recountFav();
+
   paintFavList();
 };
 
@@ -191,9 +205,21 @@ const paintFavList = () => {
     spanDelete.appendChild(iDelete);
     listItem.appendChild(spanDelete);
   }
+
   listenDeleteFav();
+  recountFav();
   updateFavSearch();
   paintShows();
+};
+
+const recountFav = () => {
+  if (favShows.length < 1) {
+    tvFav.innerHTML = `Abed's favorite list is empty`;
+  } else if (favShows.length === 1) {
+    tvFav.innerHTML = `${favShows[0].name} is now Abed's favorite`;
+  } else if (favShows.length > 1) {
+    tvFav.innerHTML = `${favShows[0].name} and ${favShows.length - 1} more are now Abed's favorite`;
+  }
 };
 
 function updateFavSearch() {
@@ -246,10 +272,12 @@ const resetFavs = () => {
   updateLocalStorage();
   paintFavList();
   deleteFavSearch();
+  recountFav();
 };
 
 btnReset.addEventListener('click', resetFavs);
 
+recountFav();
 paintFavList();
 paintShows();
 getFromLocalStorage();

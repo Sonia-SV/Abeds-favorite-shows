@@ -1,0 +1,115 @@
+.js-item {
+  cursor: pointer;
+}
+
+.js-fav-delete {
+  cursor: pointer;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+.main__shows {
+  &__fav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-top: -200px;
+    &__tv {
+      background: {
+        image: url('../images/tv.png');
+        size: contain;
+        repeat: no-repeat;
+        //color: $color-tertiary;
+        position: relative;
+        z-index: 3;
+      }
+      p {
+        color: rgb(165, 165, 142);
+        font-size: 30px;
+        text-align: center;
+      }
+
+      width: 300px;
+      height: 300px;
+    }
+    ul {
+      display: none;
+    }
+  }
+
+  &__search {
+    padding-top: rem(30);
+    grid-column: span 4;
+    display: grid;
+    //background-color: blue;
+    align-content: start;
+    &__results {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 20px;
+
+      li {
+        display: block;
+        grid-column: span 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        background-color: $color-primary-low-oppacity;
+        border-radius: 5px;
+        div {
+          img {
+            border-radius: 3px;
+            box-shadow: 2px 2px 3px 2px rgba(34, 34, 34, 0.692);
+            margin-bottom: 5px;
+            object-fit: contain;
+            width: 120px;
+          }
+        }
+        h3 {
+          font-size: 25px;
+          text-align: center;
+          color: $color-light-midtone;
+          margin: 5px;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  @include tablet {
+    margin-left: 30px;
+    margin-right: 30px;
+    &__search {
+      &__results {
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+
+        li {
+          div {
+            img {
+              object-fit: fill;
+              width: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+  @include desktop {
+    &__search {
+      &__results {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+  }
+  .js-fav-item {
+    background-color: $color-primary;
+
+    .h3 {
+      color: $color-midtone-dark;
+      text-decoration: underline;
+    }
+  }
+}
