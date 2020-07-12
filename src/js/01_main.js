@@ -244,7 +244,7 @@ const recountFav = () => {
   } else if (favShows.length === 1) {
     tvFav.innerHTML = `"${favShows[0].name}" is now Abed's favorite`;
   } else if (favShows.length > 1) {
-    tvFav.innerHTML = `"${favShows[0].name}" and ${favShows.length - 1} more are now Abed's favoritesgi`;
+    tvFav.innerHTML = `"${favShows[0].name}" and ${favShows.length - 1} more are now Abed's favorites`;
   }
 };
 
