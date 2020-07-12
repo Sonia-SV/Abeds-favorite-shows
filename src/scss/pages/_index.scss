@@ -1,16 +1,7 @@
 .main {
   font-family: $main;
   color: $color-light;
-  &__hero {
-    background: {
-      image: url('../images/Herowide.png');
-      size: cover;
-      position: top;
-      repeat: no-repeat;
-    }
 
-    height: 200px;
-  }
   &__data {
     display: flex;
     flex-direction: column;
@@ -29,7 +20,8 @@
         margin: 3px 0 3px 0;
       }
       &__input {
-        color: $color-midtone-dark;
+        color: $color-secondary;
+        text-align: center;
         background-color: $color-midtone-dark;
         margin: 3px 0 3px 0;
         font-size: 16px;
@@ -49,12 +41,16 @@
         font-size: 16px;
         width: 60px;
         box-shadow: inset 1px 1px 2px 0px rgba(224, 221, 224, 1), 2px 2px 2px 2px rgb(29, 29, 29);
+        z-index: 3;
       }
     }
   }
 
   @include tablet {
     &__data {
+      position: absolute;
+      width: 100%;
+      top: 40vh;
       &__form {
         margin: 35px auto 40px auto;
         padding: 15px;
@@ -73,11 +69,6 @@
           width: 100px;
         }
       }
-    }
-  }
-  @include desktop {
-    &__hero {
-      height: 350px;
     }
   }
 }

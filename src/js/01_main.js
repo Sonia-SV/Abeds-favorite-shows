@@ -14,12 +14,14 @@ const searchListContainer = document.createElement('div');
 const favListContainer = document.createElement('aside');
 const searchList = document.createElement('ul');
 const favList = document.createElement('ul');
+const favElement = document.createElement('div');
+const favsWarning = document.createElement('p');
 
 showsContainer.setAttribute('class', 'main__shows');
-searchListContainer.setAttribute('class', 'main__shows__search');
-favListContainer.setAttribute('class', 'main__shows__fav');
+searchListContainer.setAttribute('class', 'main__shows__search js-search-results');
+favListContainer.setAttribute('class', 'main__shows__fav wrapper');
 searchList.setAttribute('class', 'main__shows__search__results');
-favList.setAttribute('class', 'main__shows__fav__results');
+favList.setAttribute('class', 'main__shows__fav__results__ul');
 mainPage.appendChild(showsContainer);
 showsContainer.appendChild(favListContainer);
 showsContainer.appendChild(searchListContainer);
@@ -28,20 +30,41 @@ const tvIcon = document.createElement('div');
 tvIcon.setAttribute('class', 'main__shows__fav__tv  js-tv-icon');
 favListContainer.appendChild(tvIcon);
 const tvFav = document.createElement('p');
-tvIcon.appendChild(tvFav);
+const tvImg = document.createElement('img');
+const tvButton = document.createElement('div');
+tvButton.setAttribute('class', 'main__shows__fav__tv__button js-favs-toggle');
 
-const resetItem = document.createElement('div');
-const reset = document.createTextNode('RESET YOUR FAVORITES');
-resetItem.setAttribute('class', 'main__shows__fav__reset js-button-reset');
-favListContainer.appendChild(resetItem);
-resetItem.appendChild(reset);
-favListContainer.appendChild(favList);
+tvImg.setAttribute('class', 'main__shows__fav__tv__img');
+tvImg.setAttribute('src', './assets/images/tv.png');
+
+tvIcon.appendChild(tvImg);
+tvIcon.appendChild(tvFav);
+tvIcon.appendChild(tvButton);
+
+const resetContainer = document.createElement('div');
+const resetImg = document.createElement('img');
+const resetButton = document.createElement('div');
+
+resetButton.setAttribute('class', 'js-button-reset main__shows__fav__reset__button ');
+resetImg.setAttribute('class', 'main__shows__fav__reset__img');
+resetImg.setAttribute('src', './assets/images/trashcan.png');
+
+const reset = document.createTextNode('Reset Favorites');
+resetContainer.setAttribute('class', 'main__shows__fav__reset');
+favListContainer.appendChild(resetContainer);
+resetButton.appendChild(reset);
+resetContainer.appendChild(resetImg);
+resetContainer.appendChild(resetButton);
 
 const errorSearch = document.createElement('p');
 errorSearch.setAttribute('class', 'js-error-message');
-searchListContainer.appendChild(errorSearch);
 searchListContainer.appendChild(searchList);
+searchListContainer.appendChild(errorSearch);
 
+favElement.setAttribute('class', 'main__shows__fav__results js-fav-results');
+favListContainer.appendChild(favElement);
+favElement.appendChild(favList);
+favElement.appendChild(favsWarning);
 /*-----GET SHOWS FROM API-----*/
 
 //Handle events
@@ -64,7 +87,7 @@ const getShowsFromApi = () => {
     .then((response) => response.json())
     .then((searchData) => {
       if (searchData.length === 0) {
-        errorSearch.innerHTML = 'Tu búsqueda no ha dado resultados';
+        errorSearch.innerHTML = `We can't find nothing, try again!`;
       } else {
         errorSearch.innerHTML = '';
       }
@@ -168,7 +191,7 @@ const getFromLocalStorage = () => {
     favShows = data;
   }
   recountFav();
-
+  nameFavButton();
   paintFavList();
 };
 
@@ -191,10 +214,12 @@ const paintFavList = () => {
     listTittle.appendChild(tittleName);
 
     //Image
+    const imgcontainer = document.createElement('div');
     const listImage = document.createElement('img');
     listImage.setAttribute('src', fav.img);
+    imgcontainer.appendChild(listImage);
 
-    listItem.appendChild(listImage);
+    listItem.appendChild(imgcontainer);
 
     //Delete icon
     const spanDelete = document.createElement('span');
@@ -216,9 +241,9 @@ const recountFav = () => {
   if (favShows.length < 1) {
     tvFav.innerHTML = `Abed's favorite list is empty`;
   } else if (favShows.length === 1) {
-    tvFav.innerHTML = `${favShows[0].name} is now Abed's favorite`;
+    tvFav.innerHTML = `"${favShows[0].name}" is now Abed's favorite`;
   } else if (favShows.length > 1) {
-    tvFav.innerHTML = `${favShows[0].name} and ${favShows.length - 1} more are now Abed's favorite`;
+    tvFav.innerHTML = `"${favShows[0].name}" and ${favShows.length - 1} more are now Abed's favorite`;
   }
 };
 
@@ -273,9 +298,46 @@ const resetFavs = () => {
   paintFavList();
   deleteFavSearch();
   recountFav();
+  nameFavButton();
+  closeFavs();
 };
 
 btnReset.addEventListener('click', resetFavs);
+
+/*-----OPEN FAVS-----*/
+const btnFavs = document.querySelector('.js-favs-toggle');
+const favToggle = document.querySelector('.js-fav-results');
+const searchToggle = document.querySelector('.js-search-results');
+
+const openFavs = () => {
+  favToggle.classList.toggle('js-fav-open');
+  searchToggle.classList.toggle('js-close');
+  if (favShows.length === 0) {
+    favsWarning.innerHTML = `oh no! Abed's show list seems to be empty!`;
+  } else {
+    favsWarning.innerHTML = '';
+  }
+
+  nameFavButton();
+};
+
+btnFavs.addEventListener('click', openFavs);
+
+const closeFavs = () => {
+  favToggle.classList.remove('js-fav-open');
+  searchToggle.classList.remove('js-close');
+  nameFavButton();
+};
+
+/*-----PAINT FAVS BUTTON-----*/
+
+const nameFavButton = () => {
+  if (favToggle.classList.contains('js-fav-open')) {
+    tvButton.innerHTML = 'Close favorites';
+  } else {
+    tvButton.innerHTML = 'Open favorites';
+  }
+};
 
 recountFav();
 paintFavList();
