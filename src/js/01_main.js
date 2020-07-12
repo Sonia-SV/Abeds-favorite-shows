@@ -1,8 +1,4 @@
-//Arrays
-
-let searchShows = [];
-let favShows = [];
-
+'use strict';
 //Const
 const searchInput = document.querySelector('.js-search');
 const mainPage = document.querySelector('.js-main');
@@ -62,8 +58,14 @@ searchListContainer.appendChild(errorSearch);
 
 favElement.setAttribute('class', 'main__shows__fav__results js-fav-results');
 favListContainer.appendChild(favElement);
-favElement.appendChild(favList);
 favElement.appendChild(favsWarning);
+favElement.appendChild(favList);
+
+//Arrays
+
+let searchShows = [];
+let favShows = [];
+
 /*-----GET SHOWS FROM API-----*/
 
 //Handle events
@@ -242,7 +244,7 @@ const recountFav = () => {
   } else if (favShows.length === 1) {
     tvFav.innerHTML = `"${favShows[0].name}" is now Abed's favorite`;
   } else if (favShows.length > 1) {
-    tvFav.innerHTML = `"${favShows[0].name}" and ${favShows.length - 1} more are now Abed's favorite`;
+    tvFav.innerHTML = `"${favShows[0].name}" and ${favShows.length - 1} more are now Abed's favoritesgi`;
   }
 };
 
@@ -262,6 +264,7 @@ const handleDeleteFav = (ev) => {
   const showIdx = favShows.indexOf(clickedShow);
   favShows.splice(showIdx, 1);
   paintFavList();
+  favListMessage();
   updateLocalStorage();
   deleteFavSearch();
   paintShows();
@@ -311,13 +314,19 @@ const searchToggle = document.querySelector('.js-search-results');
 const openFavs = () => {
   favToggle.classList.toggle('js-fav-open');
   searchToggle.classList.toggle('js-close');
-  if (favShows.length === 0) {
-    favsWarning.innerHTML = `oh no! Abed's show list seems to be empty!`;
-  } else {
-    favsWarning.innerHTML = '';
-  }
 
+  favListMessage();
   nameFavButton();
+};
+
+const favListMessage = () => {
+  if (favToggle.classList.contains('js-fav-open')) {
+    if (favShows.length === 0) {
+      favsWarning.innerHTML = `oh no! Abed's show list seems to be empty!`;
+    } else {
+      favsWarning.innerHTML = '';
+    }
+  }
 };
 
 btnFavs.addEventListener('click', openFavs);
