@@ -16,7 +16,13 @@
     }
   }
   @include tablet {
-    top: 30vh;
+    top: 32vh;
+    &__h1 {
+      width: 400px;
+    }
+  }
+  @include desktop {
+    top: 25vh;
     &__h1 {
       width: 400px;
     }
