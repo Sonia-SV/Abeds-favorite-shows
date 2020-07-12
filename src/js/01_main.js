@@ -1,4 +1,3 @@
-'use strict';
 //Arrays
 
 let searchShows = [];
