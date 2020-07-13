@@ -1,5 +1,6 @@
 'use strict';
 //Const
+const formSubmit = document.querySelector('.js-form');
 const searchInput = document.querySelector('.js-search');
 const mainPage = document.querySelector('.js-main');
 const searchButton = document.querySelector('.js-search-button');
@@ -74,6 +75,12 @@ const handleSearchButton = (ev) => {
   resetSearch();
   getShowsFromApi();
 };
+
+// const handleSubmit = (ev) => {
+//   ev.preventDefault();
+//   resetSearch();
+//   getShowsFromApi();
+// }
 
 //Reset Search
 const resetSearch = () => {
@@ -150,6 +157,7 @@ const paintShows = () => {
   }
 };
 
+formSubmit.addEventListener('submit', handleSearchButton);
 searchButton.addEventListener('click', handleSearchButton);
 
 /*-----ADD SHOWS TO FAV-----*/
