@@ -11,3 +11,19 @@
     @content;
   }
 }
+
+@mixin community-choice {
+  background-size: cover;
+  z-index: 999;
+  transform: translate(0, -100%);
+  position: absolute;
+  width: 120px;
+  height: 168.5px;
+  margin-bottom: -168.5px;
+
+  @include tablet {
+    width: 210px;
+    height: 295px;
+    margin-bottom: -295px;
+  }
+}

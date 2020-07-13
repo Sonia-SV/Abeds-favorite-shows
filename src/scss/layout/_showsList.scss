@@ -171,6 +171,7 @@
         border-radius: 5px;
 
         div {
+          position: relative;
           img {
             border-radius: 3px;
             box-shadow: 2px 2px 3px 2px rgba(34, 34, 34, 0.692);
@@ -271,4 +272,34 @@
 
 .js-warning-p {
   display: block;
+}
+
+.js-annie-frame {
+  background-image: url('../images/annies.png');
+  @include community-choice();
+}
+
+.js-britta-frame {
+  background-image: url('../images/brittas.png');
+  @include community-choice();
+}
+
+.js-troy-frame {
+  background-image: url('../images/troys.png');
+  @include community-choice();
+}
+
+.js-jeff-frame {
+  background-image: url('../images/jeffs.png');
+  @include community-choice();
+}
+
+.js-pierce-frame {
+  background-image: url('../images/pierces.png');
+  @include community-choice();
+}
+
+.js-shirley-frame {
+  background-image: url('../images/shirleys.png');
+  @include community-choice();
 }

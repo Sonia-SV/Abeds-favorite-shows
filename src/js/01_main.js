@@ -97,6 +97,7 @@ const paintShows = () => {
 
     listItem.appendChild(imgcontainer);
     listenFavClicks();
+    paintCommunityCast(show, imgcontainer);
   }
 };
 
@@ -295,6 +296,41 @@ const nameFavButton = () => {
     tvButton.innerHTML = 'Close favorites';
   } else {
     tvButton.innerHTML = 'Open favorites';
+  }
+};
+
+/*-----SPECIAL COMMUNITY CAST-----*/
+
+const paintCommunityCast = (ev, frame) => {
+  if (ev.id === 17869) {
+    const listFrame = document.createElement('div');
+    frame.appendChild(listFrame);
+    listFrame.classList.add('js-annie-frame');
+  }
+  if (ev.id === 6765) {
+    const listFrame = document.createElement('div');
+    frame.appendChild(listFrame);
+    listFrame.classList.add('js-britta-frame');
+  }
+  if (ev.id === 6508) {
+    const listFrame = document.createElement('div');
+    frame.appendChild(listFrame);
+    listFrame.classList.add('js-troy-frame');
+  }
+  if (ev.id === 34453) {
+    const listFrame = document.createElement('div');
+    frame.appendChild(listFrame);
+    listFrame.classList.add('js-jeff-frame');
+  }
+  if (ev.id === 361) {
+    const listFrame = document.createElement('div');
+    frame.appendChild(listFrame);
+    listFrame.classList.add('js-pierce-frame');
+  }
+  if (ev.id === 988) {
+    const listFrame = document.createElement('div');
+    frame.appendChild(listFrame);
+    listFrame.classList.add('js-shirley-frame');
   }
 };
 
