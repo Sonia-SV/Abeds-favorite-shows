@@ -37,11 +37,6 @@ const getShowsFromApi = () => {
   fetch(`http://api.tvmaze.com/search/shows?q=${searchShow}`)
     .then((response) => response.json())
     .then((searchData) => {
-      if (searchData.length === 0) {
-        errorSearch.innerHTML = `We can't find nothing, try again!`;
-      } else {
-        errorSearch.innerHTML = '';
-      }
       for (const data of searchData) {
         if (data.show.image !== null) {
           searchShows.push({
@@ -59,9 +54,20 @@ const getShowsFromApi = () => {
           });
         }
       }
+      paintError(searchData);
       updateFavSearch();
       paintShows();
     });
+};
+
+/*-----PAINT ERROR-----*/
+
+const paintError = (ev) => {
+  if (ev.length === 0) {
+    errorSearch.innerHTML = `We can't find nothing, try again!`;
+  } else {
+    errorSearch.innerHTML = '';
+  }
 };
 
 /*-----PAINT SEARCH-----*/
