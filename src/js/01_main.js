@@ -43,20 +43,32 @@ const getShowsFromApi = () => {
         errorSearch.innerHTML = '';
       }
       for (const data of searchData) {
+        console.log(data.show.schedule.days);
+        let days;
+        if (data.show.schedule.days.length > 1) {
+          days = data.show.schedule.days;
+        } else {
+          days = data.show.schedule.days;
+        }
+
         if (data.show.image !== null) {
           searchShows.push({
             id: data.show.id,
             name: data.show.name,
             img: data.show.image.medium,
             fav: false,
+            day: days,
           });
+          console.log(searchShows);
         } else {
           searchShows.push({
             id: data.show.id,
             name: data.show.name,
             img: './assets/images/Cornelius.png',
             fav: false,
+            day: days,
           });
+          console.log(searchShows);
         }
       }
       updateFavSearch();
@@ -94,6 +106,13 @@ const paintShows = () => {
     const listImage = document.createElement('img');
     listImage.setAttribute('src', show.img);
     imgcontainer.appendChild(listImage);
+
+    //Days
+    const listDays = document.createElement('h4');
+    listDays.setAttribute('class', 'h4');
+    const scheudleDay = document.createTextNode(show.day);
+    listItem.appendChild(listDays);
+    listDays.appendChild(scheudleDay);
 
     listItem.appendChild(imgcontainer);
     listenFavClicks();
