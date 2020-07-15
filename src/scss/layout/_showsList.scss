@@ -232,9 +232,9 @@
             img {
               object-fit: fill;
               width: auto;
-              &:hover {
-                width: 200px;
-              }
+            }
+            &:hover {
+              transform: scale(0.9);
             }
           }
         }
