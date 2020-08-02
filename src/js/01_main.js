@@ -1,5 +1,7 @@
 'use strict';
 //Const
+const placeImg = './assets/images/Cornelius.png';
+
 const formSubmit = document.querySelector('.js-form');
 const searchInput = document.querySelector('.js-search');
 
@@ -38,21 +40,12 @@ const getShowsFromApi = () => {
     .then((response) => response.json())
     .then((searchData) => {
       for (const data of searchData) {
-        if (data.show.image !== null) {
-          searchShows.push({
-            id: data.show.id,
-            name: data.show.name,
-            img: data.show.image.medium,
-            fav: false,
-          });
-        } else {
-          searchShows.push({
-            id: data.show.id,
-            name: data.show.name,
-            img: './assets/images/Cornelius.png',
-            fav: false,
-          });
-        }
+        searchShows.push({
+          id: data.show.id,
+          name: data.show.name,
+          img: data.show.image !== null ? data.show.image.medium : placeImg,
+          fav: false,
+        });
       }
       paintError(searchData);
       updateFavSearch();
@@ -63,11 +56,7 @@ const getShowsFromApi = () => {
 /*-----PAINT ERROR-----*/
 
 const paintError = (ev) => {
-  if (ev.length === 0) {
-    errorSearch.innerHTML = `We can't find nothing, try again!`;
-  } else {
-    errorSearch.innerHTML = '';
-  }
+  ev.length === 0 ? (errorSearch.innerHTML = `We can't find nothing, try again!`) : (errorSearch.innerHTML = '');
 };
 
 /*-----PAINT SEARCH-----*/
@@ -298,11 +287,7 @@ const closeFavs = () => {
 /*-----PAINT FAVS BUTTON-----*/
 
 const nameFavButton = () => {
-  if (favToggle.classList.contains('js-fav-open')) {
-    tvButton.innerHTML = 'Close favorites';
-  } else {
-    tvButton.innerHTML = 'Open favorites';
-  }
+  favToggle.classList.contains('js-fav-open') ? (tvButton.innerHTML = 'Close favorites') : (tvButton.innerHTML = 'Open favorites');
 };
 
 /*-----SPECIAL COMMUNITY CAST-----*/
